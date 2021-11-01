@@ -1,5 +1,6 @@
 package com.example.todo;
 
+//必要なクラス
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
@@ -35,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         mHelper = new TaskDbHelper(this);
-        mTaskListView = (ListView) findViewById(R.id.list_todo);
+        mTaskListView = findViewById(R.id.list_todo);
 
         /*
         SQLiteDatabase db = mHelper.getReadableDatabase();
@@ -78,22 +79,29 @@ public class MainActivity extends AppCompatActivity {
         db.close();
     }
 
+    //メニュー（+ボタン）のプログラム
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main_menu, menu);
         return super.onCreateOptionsMenu(menu);
     }
+
+    //+ボタンにタップイベントを実装
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_add_task:
                 Log.d((String) Tag, "ToDo App 項目の追加");
+
+                //アラートダイアログ（ポップアップ）を表示
                 final EditText taskEditText = new EditText(this);
                 AlertDialog dialog = new AlertDialog.Builder(this)
                         .setTitle("追加")
                         .setMessage("何をする?")
                         .setView(taskEditText)
                         .setPositiveButton("追加", new DialogInterface.OnClickListener() {
+
+                            //追加ボタンのタップイベント
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 String task = String.valueOf(taskEditText.getText());
