@@ -25,7 +25,7 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
     private static final Object Tag = "MainActivity";
-    private TaskDbHelper mHelper;
+    private TaskDbHelper mHelper;    //追加プロパティの設定
     private ListView mTaskListView;
     private ArrayAdapter<String> mAdapter;
 
@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mHelper = new TaskDbHelper(this);
+        mHelper = new TaskDbHelper(this);  //追加プロパティの初期化
         mTaskListView = findViewById(R.id.list_todo);
 
         /*
@@ -107,9 +107,9 @@ public class MainActivity extends AppCompatActivity {
                                 String task = String.valueOf(taskEditText.getText());
                                 Log.d((String) Tag, "追加された項目： " + task);
 
-                                SQLiteDatabase db =  mHelper.getWritableDatabase();
-                                ContentValues values = new ContentValues();
-                                values.put(TaskContract.TaskEntry.COL_TASK_TITLE, task);
+                                SQLiteDatabase db =  mHelper.getWritableDatabase();  //データベースと接続し
+                                ContentValues values = new ContentValues();          //追加内容がデータベースにも
+                                values.put(TaskContract.TaskEntry.COL_TASK_TITLE, task); //記載されるように
                                 db.insertWithOnConflict(TaskContract.TaskEntry.TABLE,
                                         null,
                                         values,
