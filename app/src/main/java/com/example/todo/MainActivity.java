@@ -25,7 +25,8 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
     private static final Object Tag = "MainActivity";
-    private TaskDbHelper mHelper;    //追加プロパティの設定
+    //追加プロパティの設定
+    private TaskDbHelper mHelper;
     private ListView mTaskListView;
     private ArrayAdapter<String> mAdapter;
 
@@ -36,34 +37,23 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         mHelper = new TaskDbHelper(this);  //追加プロパティの初期化
-        mTaskListView = findViewById(R.id.list_todo);
+        mTaskListView = findViewById(R.id.list_todo); //activity_main.xmlとのID接続
 
-        /*
-        SQLiteDatabase db = mHelper.getReadableDatabase();
-        Cursor cursor = db.query(TaskContract.TaskEntry.TABLE,
-                new String[]{TaskContract.TaskEntry._ID, TaskContract.TaskEntry.COL_TASK_TITLE},
-                null, null, null, null, null);
-        while(cursor.moveToNext()) {
-            int idx = cursor.getColumnIndex(TaskContract.TaskEntry.COL_TASK_TITLE);
-            Log.d((String) Tag, "データベース内のToDo: " + cursor.getString(idx));
-        }
-        cursor.close();
-        db.close();
-        */
         updateUI();
     }
-
+    //ToDoデータの画面表示
     private void updateUI() {
         ArrayList<String> taskList = new ArrayList<>();
         SQLiteDatabase db = mHelper.getReadableDatabase();
         Cursor cursor = db.query(TaskContract.TaskEntry.TABLE,
                 new String[]{TaskContract.TaskEntry._ID, TaskContract.TaskEntry.COL_TASK_TITLE},
                 null, null, null, null, null);
+        //データベースの読み込み
         while(cursor.moveToNext()) {
             int idx = cursor.getColumnIndex(TaskContract.TaskEntry.COL_TASK_TITLE);
             taskList.add(cursor.getString(idx));
         }
-
+        //読み込んだデータベースの内容を画面表示させるためのTextViewへの接続
         if (mAdapter ==  null) {
             mAdapter = new ArrayAdapter<>(this,
                     R.layout.item_todo,
@@ -127,7 +117,7 @@ public class MainActivity extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
         }
     }
-
+    //完了ボタンのタップイベントの実装
     public void deleteTask(View view) {
         View parent = (View) view.getParent();
         TextView taskTextView = (TextView) parent.findViewById(R.id.task_title);
